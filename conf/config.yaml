@@ -1,0 +1,79 @@
+# globals
+hydra:
+  mode: MULTIRUN
+  sweeper:
+    params:
+      +dataset: tcga #, mimic
+      +dim_treat: 2 # 1, 2, 3 
+      +data.param_concentration: 2 # 0, 1, 2, 3, 4 
+      +random_seed: 42 #, 43, 44, 45, 46, 47, 48, 49, 50
+
+# dataset: mimic, tcga
+data_dir: dataset/
+save_dir: logs/
+
+
+# dim_treat: 2
+
+data:
+  param_shift: 0 # 
+  # param_concentration: 2 
+  param_interaction: 2 
+  noise: 0.5
+  n_grid_1dim : 11 # 5 for 3dim
+
+policy:
+  k_runs: 5
+  n_epochs: 400
+
+  batch_size: 512
+  init_lr: 0.001 
+  init_lr_penalty: 0.01 # most 0.005
+
+  ############### 
+  lambda_start: 3.8 # 
+
+  unadjusted: False # False True 
+
+  model_args:
+    dim_treat: -1
+    dim_cov: -1 # replaced in script
+    hidden_dim: 50
+    # num_layers: 2
+    flow_length: 1
+    count_bins: 5
+    order: quadratic
+
+outcome:
+  n_epochs: 800
+  verbose: 9999 
+
+  batch_size: 1000 
+  init_lr:  0.005 
+
+  model_args:
+    dim_treat: -1
+    dim_cov: -1 # replaced in script
+    num_units_representation: [50, 50]
+    num_units_head: [50, 1]
+    degree: 2
+    knots: [0.33, 0.66] 
+
+density:
+  n_epochs: 800
+
+  batch_size: 512
+  init_lr: 0.001
+
+  model_args:
+    dim_treat: -1
+    dim_cov: -1 # replaced in script
+    hidden_dim: 50
+    num_layers: 2
+    flow_length: 1
+    count_bins: 5
+    order: quadratic
+    bound: 0.5
+
+
+
